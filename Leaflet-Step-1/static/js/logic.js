@@ -6,9 +6,8 @@ d3.json(queryUrl).then(function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data)
 });
-
+    
 // console.log(createFeatures)
-
 
 function createFeatures(earthquakeData) {
 
@@ -33,13 +32,6 @@ function createFeatures(earthquakeData) {
   var earthquakes = L.geoJSON(earthquakeData, {
     pointToLayer : function(feature,latlng) {
       return L.circleMarker(latlng,geojsonMarkerOptions);
-      //   
-      //   radius : feature.properties.mag * 5,
-      //   fillColor: fillColor(feature.geometry.coordinates[2]),
-      //     color: '#000000',
-      //     fillOpacity: 1,
-      //     weight: 0.6 
-      // })
     },
 
     onEachFeature: onEachFeature
@@ -53,15 +45,6 @@ function createMap(earthquakes) {
 
   // Define streetmap, darkmap and satellite layers
   var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
-    maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
-    accessToken: API_KEY
-  });
-
-  var color_map = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     tileSize: 512,
     maxZoom: 18,
@@ -92,8 +75,7 @@ function createMap(earthquakes) {
   var baseMaps = {
     "Street Map": streetmap,
     "Dark Map": darkmap,
-    "Satellite": satellite_map,
-    "Color": color_map
+    "Satellite": satellite_map
   };
 
   // Create overlay object to hold our overlay layer
@@ -104,9 +86,9 @@ function createMap(earthquakes) {
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
-      37.09, -95.71
+      40, 0.
     ],
-    zoom: 3,
+    zoom: 2,
     layers: [streetmap, earthquakes]
   });
 
