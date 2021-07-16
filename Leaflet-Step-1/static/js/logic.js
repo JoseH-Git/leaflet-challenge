@@ -19,11 +19,20 @@ function createFeatures(earthquakeData) {
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
   }
 
+  var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+  
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
-    layerpoint : function(feature,latlng) {
-      return L.circleMarker(latlng);
+    pointToLayer : function(feature,latlng) {
+      return L.circleMarker(latlng,geojsonMarkerOptions);
       //   
       //   radius : feature.properties.mag * 5,
       //   fillColor: fillColor(feature.geometry.coordinates[2]),
