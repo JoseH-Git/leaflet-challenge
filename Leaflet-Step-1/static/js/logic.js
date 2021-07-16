@@ -4,10 +4,11 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
-  createFeatures(data.features)
+  createFeatures(data)
 });
 
 console.log(createFeatures)
+
 
 function createFeatures(earthquakeData) {
 
@@ -21,6 +22,16 @@ function createFeatures(earthquakeData) {
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
+    layerpoint = function(feature,latlng) {
+      return L.circleMaker(latlng,{
+        radius : feature.properties.mag * 5,
+        fillColor: fillColor(feature.geometry.coordinates[2]),
+          color: '#000000',
+          fillOpacity: 1,
+          weight: 0.6 
+      })
+    },
+    
     onEachFeature: onEachFeature
   });
 
