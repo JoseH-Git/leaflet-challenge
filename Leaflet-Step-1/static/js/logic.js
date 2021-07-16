@@ -7,7 +7,7 @@ d3.json(queryUrl).then(function(data) {
   createFeatures(data)
 });
 
-console.log(createFeatures)
+// console.log(createFeatures)
 
 
 function createFeatures(earthquakeData) {
@@ -23,7 +23,7 @@ function createFeatures(earthquakeData) {
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
     layerpoint : function(feature,latlng) {
-      return L.circleMaker(latlng,{
+      return L.circleMarker(latlng,{
         radius : feature.properties.mag * 5,
         fillColor: fillColor(feature.geometry.coordinates[2]),
           color: '#000000',
@@ -96,7 +96,7 @@ function createMap(earthquakes) {
     center: [
       37.09, -95.71
     ],
-    zoom: 5,
+    zoom: 3,
     layers: [streetmap, earthquakes]
   });
 
