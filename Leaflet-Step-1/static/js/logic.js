@@ -5,33 +5,56 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 d3.json(queryUrl).then(function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data)
-});
+  });
     
 // console.log(createFeatures)
+
+function fillColor(depth) {
+  switch (true) {
+  case depth > 90:
+    return "red";
+  case depth > 70:
+    return "pink";
+  case depth > 50:
+    return "orange";
+  case depth > 30:
+    return "yellow";
+  case depth > 10:
+    return "khaki";
+  default:
+    return "chartreuse";
+  }
+}
+// var geojsonMarkerOptions = {
+//   radius: 8,
+//   fillColor: "#ff7800",
+//   color: "#000",
+//   weight: 1,
+//   opacity: 1,
+//   fillOpacity: 0.8
+// };
+
 
 function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
-    layer.bindPopup("<h3>" + feature.properties.place + "<br>" + " Magnitude " + feature.properties.mag + 
+    layer.bindPopup("<h3>" + feature.properties.place + "<br>" + "<br>" + " Magnitude " + feature.properties.mag + 
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
   }
-
-  var geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
   
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
     pointToLayer : function(feature,latlng) {
-      return L.circleMarker(latlng,geojsonMarkerOptions);
+      return L.circleMarker(latlng,{
+        radius: feature.properties.mag * 2,
+        fillColor: fillColor(feature.geometry.coordinates[2]),
+        color: '#000000',
+        fillOpacity: 1,
+        weight: 0.6 
+      })
     },
 
     onEachFeature: onEachFeature
