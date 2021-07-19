@@ -7,7 +7,7 @@ d3.json(queryUrl).then(function(data) {
   createFeatures(data)
   });
     
-// console.log(createFeatures)
+console.log(createFeatures);
 
 function fillColor(depth) {
   switch (true) {
@@ -121,4 +121,22 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+  
+      // Create Legends
+      var legend = L.control({position: "bottomright"});
+      legend.onAdd = function() {
+          var div = L.DomUtil.create ("div", "info legend"),
+              grades = [-10,10,30,50,50,70,90]
+              labels = [];
+
+      // Loop and generate labels
+      for (var i=0; i < grades.length; i++) {
+          div.innerHTML += 
+          '<i style="background:' + fillColor(grades[i]) + '"></i> ' +
+          grades[i] + (grades[i +1 ] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+      }
+      return div;
+  };
+  legend.addTo(myMap);
+
 }
